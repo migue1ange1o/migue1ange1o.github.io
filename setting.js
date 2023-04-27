@@ -12,8 +12,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // camera.position.y = 8;
-camera.position.y = 5;
-camera.position.z = 15;
+camera.position.y = 15;
+camera.position.z = 25;
 camera.rotation.x += THREE.MathUtils.degToRad(30);
 
 // Create Orbit Controls
@@ -35,40 +35,12 @@ const lightMesh = new THREE.Mesh(lightGeometry, lightMaterial);
 lightMesh.position.set(-10, 20, -40);
 scene.add(lightMesh);
 
-
-// Create water material
-const waterGeometry = new THREE.PlaneGeometry(1000, 1000);
-const water = new THREE.Water(
-  waterGeometry,
-  {
-    textureWidth: 512,
-    textureHeight: 512,
-    waterNormals: new THREE.TextureLoader().load('https://threejs.org/examples/textures/waternormals.jpg', function (texture) {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    }),
-    alpha: 1.0,
-    sunDirection: new THREE.Vector3(),
-    sunColor: 0xffffff,
-    waterColor: 0x1F1F4B,
-    distortionScale: 3.7,
-    fog: scene.fog !== undefined
-  }
-);
-
-water.rotation.x = -Math.PI / 2;
-water.position.y = -10
-
-scene.add(water);
-
-// Create an array to hold the bulb meshes
-const bulbMeshes = [];
-
 // Load the Blender asset .obj file
 const loader = new THREE.OBJLoader();
 loader.load(
+  // "http://localhost:3000/cross.obj",
   "https://migue1ange1o.s3.amazonaws.com/cross.obj",
   function (object) {
-    // object.scale.set(0.8, 0.8, 0.8);
 
     // Add a reflective material to the cross object
     const crossMaterial = new THREE.MeshPhysicalMaterial({
@@ -83,28 +55,25 @@ loader.load(
     });
     scene.add(object);
 
-    // Create multiple instances of the light bulb mesh
-    for (let i = 0; i < 50; i++) {
-      const bulbGeometry = new THREE.SphereGeometry(0.1, 16, 16);
-      const bulbMaterial = new THREE.MeshStandardMaterial({
-        emissive: 0xffffee,
-        emissiveIntensity: 0.7,
-        color: 0xf7d27c, // warm yellow color
-      });
-      const bulbMesh = new THREE.Mesh(bulbGeometry, bulbMaterial);
-      bulbMesh.position.set(
-        THREE.MathUtils.randFloatSpread(32),
-        THREE.MathUtils.randFloatSpread(32),
-        THREE.MathUtils.randFloatSpread(32)
-      );
-      scene.add(bulbMesh);
-      bulbMeshes.push(bulbMesh);
-
-      // Make the light bulb emit light
-      const bulbLight = new THREE.PointLight(0xffffee, 2, 10, 2);
-      bulbLight.position.copy(bulbMesh.position);
-      scene.add(bulbLight);
-    }
+    // Make the light bulb emit light
+    const bulb1 = new THREE.PointLight(0xffffee, 2, 10, 2);
+    const bulb2 = new THREE.PointLight(0xffffee, 2, 10, 2);
+    const bulb3 = new THREE.PointLight(0xffffee, 2, 10, 2);
+    const bulb4 = new THREE.PointLight(0xffffee, 2, 10, 2);
+    const bulb5 = new THREE.PointLight(0xffffee, 2, 10, 2);
+    const bulb6 = new THREE.PointLight(0xffffee, 2, 10, 2);
+    bulb1.position.set(2, 8, 1);
+    bulb2.position.set(-2, 8, 1);
+    bulb3.position.set(-2, 2, 1);
+    bulb4.position.set(2, 2, 1);
+    bulb5.position.set(0, -10, 0);
+    bulb6.position.set(0, 10, 0);
+    scene.add(bulb1);
+    scene.add(bulb2);
+    scene.add(bulb3);
+    scene.add(bulb4);
+    scene.add(bulb5);
+    scene.add(bulb6);
   },
   function (xhr) {
     console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
@@ -113,6 +82,7 @@ loader.load(
     console.log("An error happened");
   }
 );
+
 
 function animate() {
   requestAnimationFrame(animate);
@@ -124,24 +94,6 @@ function animate() {
   water.material.uniforms['time'].value += 1.0 / 60.0;
   water.material.uniforms['time'].needsUpdate = true;
 
-  const time = Date.now() * 0.0005; // convert time to seconds
-
-  // Animate the bulb meshes
-  for (let i = 0; i < bulbMeshes.length; i++) {
-    const bulbMesh = bulbMeshes[i];
-
-    // Update the position based on time
-    const orbitRadius = 18;
-    const polarAngle = time * 0.4 + i * 0.3;
-    const azimuthalAngle = time * 0.2 + i * 0.2 + (i % 2 === 0 ? Math.PI / 2 : 0);
-    const x = orbitRadius * Math.sin(polarAngle) * Math.cos(azimuthalAngle);
-    const y = orbitRadius * Math.cos(polarAngle) + 3;
-    const z = orbitRadius * Math.sin(polarAngle) * Math.sin(azimuthalAngle) + 2;
-    bulbMesh.position.set(x, y, z);
-
-    // Animate the rotation
-    bulbMesh.rotation.y += 0.02;
-  }
 }
 
 
