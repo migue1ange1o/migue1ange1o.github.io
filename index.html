@@ -3,56 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <title>Blender Asset in Three.js</title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-      }
-
-      #container {
-        width: 100%;
-        height: 100%; /* subtract the height of the navbar */
-        /* margin-top: 50px; */
-      }
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        overflow: hidden;
-      }
-
-      .archive-posts {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: 90%;
-        max-height: 90%;
-        overflow-y: scroll;
-        background-color: transparent;
-        padding: 20px;
-      }
-
-      ::-webkit-scrollbar {
-        width: 0;
-        height: 0;
-      }
-
-      h2 {
-        color: aliceblue;
-      }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-      <div class="archive-posts">
-        <h2>miguel angelo</h2>
-        <!-- list of archive posts -->
-      </div>
+    <div class="archive-posts">
+      <h1>miguel angelo</h1>
+      <!-- list of archive posts -->
+    </div>
     <div id="container"></div>
 
     <!-- Include Three.js library -->
@@ -60,10 +17,16 @@
 
     <!-- Include OBJLoader.js -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.136.0/examples/js/loaders/OBJLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.131.2/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.131.2/examples/js/objects/Water.js"></script>
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Create a script to load the Blender asset -->
-    <script src="./setting.js"></script>
+    <script src="./scene.js"></script>
   </body>
 </html>

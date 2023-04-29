@@ -11,19 +11,9 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// camera.position.y = 8;
 camera.position.y = 15;
 camera.position.z = 25;
-camera.rotation.x += THREE.MathUtils.degToRad(30);
-
-// Create Orbit Controls
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
-controls.screenSpacePanning = false;
-controls.minDistance = 10;
-controls.maxDistance = 100;
-controls.maxPolarAngle = Math.PI / 1.5;
+camera.rotation.x += THREE.MathUtils.degToRad(-20);
 
 const lightGeometry = new THREE.SphereGeometry(5, 22, 22);
 const lightMaterial = new THREE.MeshStandardMaterial({
@@ -38,10 +28,9 @@ scene.add(lightMesh);
 // Load the Blender asset .obj file
 const loader = new THREE.OBJLoader();
 loader.load(
-  // "http://localhost:3000/cross.obj",
-  "https://migue1ange1o.s3.amazonaws.com/cross.obj",
+  "http://localhost:3000/cross.obj",
+  // "https://migue1ange1o.s3.amazonaws.com/cross.obj",
   function (object) {
-
     // Add a reflective material to the cross object
     const crossMaterial = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
@@ -83,19 +72,22 @@ loader.load(
   }
 );
 
+const clock = new THREE.Clock();
+const rotationSpeed = 0.2;
 
 function animate() {
   requestAnimationFrame(animate);
+
+  // Calculate the elapsed time since the animation started
+  const elapsedTime = clock.getElapsedTime();
+
+  // Update the camera position and rotation
+  const angle = elapsedTime * rotationSpeed;
+  camera.position.x = Math.sin(angle) * 25;
+  camera.position.z = Math.cos(angle) * 25;
+  camera.lookAt(scene.position);
+
   renderer.render(scene, camera);
-
-  controls.update()
-
-  // Animate the water
-  water.material.uniforms['time'].value += 1.0 / 60.0;
-  water.material.uniforms['time'].needsUpdate = true;
-
 }
-
-
 
 animate();
