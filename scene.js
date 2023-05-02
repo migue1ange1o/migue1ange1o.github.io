@@ -28,8 +28,8 @@ scene.add(lightMesh);
 // Load the Blender asset .obj file
 const loader = new THREE.OBJLoader();
 loader.load(
-  "http://localhost:3000/cross.obj",
-  // "https://migue1ange1o.s3.amazonaws.com/cross.obj",
+  // "http://localhost:3000/cross.obj",
+  "https://migue1ange1o.s3.amazonaws.com/cross.obj",
   function (object) {
     // Add a reflective material to the cross object
     const crossMaterial = new THREE.MeshPhysicalMaterial({
